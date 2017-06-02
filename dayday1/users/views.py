@@ -23,17 +23,20 @@ def register_commit(resquest):
     dbuser = userLogin.objects.filter(user_name=ruser)
     # 获取用户输入email
     remail = robjects.get('userEmail','')
-    # 获取数据库中的邮箱
+    # 获取数据库中的邮箱对象
     dbemail = userInfo.objects.filter(email=remail)
-    # 判断用户是否存在.存在name=1,否则name=0
-    if ruser == dbuser:
-        name = 1
+    # 判断是否获取到查询结果
+    if dbuser.count()>0:
+        # 判断用户是否存在.存在name=1,否则name=0
+        if ruser == dbuser[0].user_name:
+            name = 1
     else:
         name = 0
-
-    # 判断邮箱是否存在,存在email=1,否则email=0
-    if remail == dbemail:
-        email = 1
+        # 判断是否查询到结果
+    if dbemail.count()>0:
+        # 判断邮箱是否存在,存在email=1,否则email=0
+        if remail == dbemail[0].email:
+            email = 1
     else:
         email = 0
     # 构造上下文
@@ -43,21 +46,34 @@ def register_commit(resquest):
 # 注册
 def pregister_commit(resquest):
     robjects = resquest.POST
+    # 获取协议
+    rxy = robjects.get('allow','')
     #获取用户名
     ruser = robjects.get('user_name','')
     #获取输入密码
     rpasswd = robjects.get('pwd','')
     # 获取确认密码
     rcpasswd = robjects.get('cpwd','')
-    #密码加密
-    s1 = sha1()
-    s1.update(rpasswd)
-    rpasswd_sha1 = s1.hexdigest()
+
     #获取邮箱
     remail = robjects.get('email','')
     #存入数据库
+    if rpasswd == rcpasswd and rxy == '1':
+        # 密码加密
+        s1 = sha1()
+        s1.update(rpasswd)
+        rpasswd_sha1 = s1.hexdigest()
 
+        uI = userInfo()
+        uL = userLogin()
+        uL.user_name = ruser
+        uL.user_passwd = rpasswd_sha1
+        uL.save()
 
+        uI.email = remail
+        uI.user_id = uL.id
+        uI.save()
+    return render(resquest,'users/login.html')
 # 显示用户信息界面
 def info(resquest):
     return render(resquest, 'users/user_center_info.html')

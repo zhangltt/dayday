@@ -118,7 +118,6 @@ $(function(){
 
 $.get('/users/cregister/',{'userEmail':$('#email').val()},function(data){
 			//判断提示用户是否已经注册
-	alert(data.userEmail)
 			if(data.userEmail==1)
 			{
 
