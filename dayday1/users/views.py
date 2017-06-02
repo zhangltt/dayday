@@ -16,4 +16,4 @@ def order(resquest):
     return render(resquest, 'users/user_center_order.html')
 
 def site(resquest):
-    return render(resquest, 'users/user_center_order.html')
+    return render(resquest, 'users/user_center_site.html')
