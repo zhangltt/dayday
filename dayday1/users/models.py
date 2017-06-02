@@ -14,6 +14,7 @@ class userInfo(models.Model):
     address = models.CharField(max_length=100,default='')
     postcode = models.CharField(max_length=20,default='')
     recipient = models.CharField(max_length=20,default='')
+    email = models.CharField(max_length=20,default='')
     user = models.ForeignKey('userLogin')
     isDelete = models.BooleanField(default=False)
     class Meta:

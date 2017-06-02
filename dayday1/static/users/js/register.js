@@ -51,6 +51,20 @@ $(function(){
 			$('#user_name').next().hide();
 			error_name = false;
 		}
+
+
+		$.get('/users/cregister/',{'userName':$('#user_name').val()},function(data){
+			//判断提示用户是否已经注册
+			if(data.userName==1)
+			{
+
+			$('#user_name').next().html('用户名已经存在')
+			$('#user_name').next().show();
+			}
+
+
+
+		})
 	}
 
 	function check_pwd(){
@@ -101,6 +115,22 @@ $(function(){
 			$('#email').next().show();
 			error_check_password = true;
 		}
+
+$.get('/users/cregister/',{'userEmail':$('#email').val()},function(data){
+			//判断提示用户是否已经注册
+	alert(data.userEmail)
+			if(data.userEmail==1)
+			{
+
+			$('#email').next().html('邮箱已经注册')
+			$('#email').next().show();
+			}
+
+
+
+		})
+
+
 
 	}
 
